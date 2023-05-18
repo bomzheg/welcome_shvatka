@@ -2,8 +2,8 @@ version: '3.2'
 
 services:
 
-  template_bot:
-    container_name: template_bot
+  welcome_bot:
+    container_name: welcome_bot
     restart: always
     image: bomzheg/welcome_shvatka
     volumes:
@@ -15,6 +15,20 @@ services:
     networks:
       - reverse-proxy
       - botapi
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  migrate:
+    profiles:
+      - migrate
+    container_name: migrate
+    restart: no
+    image: bomzheg/welcome_shvatka
+    volumes:
+      - type: "bind"
+        source: "./alembic.ini"
+        target: "/alembic.ini"
+    entrypoint: [ "python3", "-m", "alembic", "upgrade", "head" ]
     extra_hosts:
       - "host.docker.internal:host-gateway"
 
