@@ -22,7 +22,7 @@ services:
     profiles:
       - migrate
     container_name: migrate
-    restart: no
+    restart: "no"
     image: bomzheg/welcome_shvatka
     volumes:
       - type: "bind"
