@@ -5,11 +5,8 @@ services:
   template_bot:
     container_name: template_bot
     restart: always
-    image: bomzheg/aiogram_template
+    image: bomzheg/welcome_shvatka
     volumes:
-      - type: "bind"
-        source: "${HOME}/TemplateBot/log"
-        target: "/log"
       - type: "bind"
         source: "./config"
         target: "/config"
@@ -47,4 +44,4 @@ volumes:
 networks:
   reverse-proxy:
     external:
-      name: nginx-revers-proxy
+      name: nginx-reverse-proxy

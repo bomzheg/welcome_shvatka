@@ -17,7 +17,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: mr-smithers-excellent/docker-build-push@v5.6
         with:
-          image: bomzheg/aiogram_template
+          image: bomzheg/welcome_shvatka
           addLatest: true
           registry: docker.io
           username: ${{ secrets.DOCKERHUB_USERNAME }}
