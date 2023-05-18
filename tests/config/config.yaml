@@ -5,6 +5,7 @@ bot:
     - 46866565
   botapi:
     type: official
+  admin_id: 42
 db:
   type: postgresql
   connector: asyncpg
