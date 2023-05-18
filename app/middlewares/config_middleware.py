@@ -17,4 +17,5 @@ class ConfigMiddleware(BaseMiddleware):
             data: dict[str, Any],
     ) -> Any:
         data["config"] = self.config
+        data["admin_id"] = self.config.admin_id
         return await handler(event, data)

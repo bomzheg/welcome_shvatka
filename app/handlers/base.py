@@ -10,12 +10,16 @@ from aiogram.utils.markdown import html_decoration as hd
 from app.dao.holder import HolderDao
 from app.models import dto
 from app.services.chat import update_chat_id
+from app import keyboadrs as kb
 
 logger = logging.getLogger(__name__)
 
 
 async def start_cmd(message: Message):
-    await message.reply("Hi!")
+    await message.reply(
+        "Привет, я помогу тебе узнать про игру Схватка в г. Лыткарино",
+        reply_markup=kb.get_start_kb()
+    )
 
 
 async def chat_id(message: Message):
