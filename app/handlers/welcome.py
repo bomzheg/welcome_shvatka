@@ -1,8 +1,9 @@
 import enum
 
-from aiogram import Bot, Router
-from aiogram.types import Message
+from aiogram import Bot, Router, F
+from aiogram.types import Message, ReplyKeyboardRemove
 
+from app.keyboadrs import WANT_PLAY, WANT_KNOW, WANT_RETURN
 from app.models import dto
 
 
@@ -47,7 +48,7 @@ async def notify_admin(admin_id: int, user: dto.User, request_type: GameInfoRequ
 
 def setup() -> Router:
     router = Router(name=__name__)
-    router.message.register(try_game_handler,)
-    router.message.register(about_game_handler,)
-    router.message.register(returning_to_game_handler,)
+    router.message.register(try_game_handler, F.text == WANT_PLAY)
+    router.message.register(about_game_handler, F.text == WANT_KNOW)
+    router.message.register(returning_to_game_handler, F.text == WANT_RETURN)
     return router
