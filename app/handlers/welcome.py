@@ -16,7 +16,8 @@ async def try_game_handler(m: Message, user: dto.User, bot: Bot, admin_id: int):
     await notify_admin(admin_id, user, GameInfoRequestType.try_game, bot)
     await m.reply(
         "Привет! Рады видеть тебя в нашем сообществе. "
-        "Скоро с тобой свяжется один из капитанов и обязательно возьмет в команду."
+        "Скоро с тобой свяжется один из капитанов и обязательно возьмет в команду.",
+        reply_markup=ReplyKeyboardRemove(),
     )
 
 
@@ -24,7 +25,8 @@ async def about_game_handler(m: Message, user: dto.User, bot: Bot, admin_id: int
     await notify_admin(admin_id, user, GameInfoRequestType.about_game, bot)
     await m.reply(
         "Привет! Рады, что ты заинтересовался игрой. "
-        "Скоро с тобой свяжется один из капитанов и ответит на все вопросы."
+        "Скоро с тобой свяжется один из капитанов и ответит на все вопросы.",
+        reply_markup=ReplyKeyboardRemove(),
     )
 
 
@@ -34,7 +36,8 @@ async def returning_to_game_handler(m: Message):
         "Ты уже знаешь, что игроки в схватку - самые дружелюбные люди в Лыткарино. "
         "Присоединяйся к нашему telegram-каналу (@shvatka_lytkarino). "
         "Там ты наверняка найдешь старых знакомых или новую команду. "
-        "Или напиши капитану @pblgblk"
+        "Или напиши капитану @pblgblk",
+        reply_markup=ReplyKeyboardRemove(),
     )
 
 
