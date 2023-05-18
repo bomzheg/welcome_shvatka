@@ -10,7 +10,6 @@ services:
       - type: "bind"
         source: "./config"
         target: "/config"
-    env_file: config/.env
     entrypoint: [ "python3", "-m", "app"]
     networks:
       - reverse-proxy
@@ -28,6 +27,9 @@ services:
       - type: "bind"
         source: "./alembic.ini"
         target: "/alembic.ini"
+      - type: "bind"
+        source: "./migrations"
+        target: "/migrations"
     entrypoint: [ "python3", "-m", "alembic", "upgrade", "head" ]
     extra_hosts:
       - "host.docker.internal:host-gateway"
@@ -59,3 +61,4 @@ networks:
   reverse-proxy:
     external:
       name: nginx-reverse-proxy
+  botapi:
