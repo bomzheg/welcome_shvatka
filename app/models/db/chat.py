@@ -1,4 +1,4 @@
-from sqlalchemy import Enum
+from sqlalchemy import Enum, BigInteger
 from sqlalchemy.orm import mapped_column, Mapped
 
 from app.enums.chat_type import ChatType
@@ -10,7 +10,7 @@ class Chat(Base):
     __tablename__ = "chats"
     __mapper_args__ = {"eager_defaults": True}
     id: Mapped[int] = mapped_column(primary_key=True)
-    tg_id: Mapped[int] = mapped_column(unique=True)
+    tg_id: Mapped[int] = mapped_column(BigInteger, unique=True)
     type: Mapped[ChatType] = mapped_column(Enum(ChatType))
     title: Mapped[str]
     username: Mapped[str]
