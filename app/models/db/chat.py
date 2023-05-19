@@ -9,7 +9,7 @@ from app.models.db.base import Base
 class Chat(Base):
     __tablename__ = "chats"
     __mapper_args__ = {"eager_defaults": True}
-    id: Mapped[int] = mapped_column(primary_key=True)
+    id: Mapped[int] = mapped_column(BigInteger, primary_key=True)
     tg_id: Mapped[int] = mapped_column(BigInteger, unique=True)
     type: Mapped[ChatType] = mapped_column(Enum(ChatType))
     title: Mapped[str]

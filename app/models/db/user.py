@@ -9,7 +9,7 @@ class User(Base):
     __tablename__ = "users"
     __mapper_args__ = {"eager_defaults": True}
     id: Mapped[int] = mapped_column(BigInteger, primary_key=True)
-    tg_id: Mapped[int] = mapped_column(unique=True)
+    tg_id: Mapped[int] = mapped_column(BigInteger, unique=True)
     first_name: Mapped[str]
     last_name: Mapped[str]
     username: Mapped[str]
