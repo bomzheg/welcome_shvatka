@@ -5,6 +5,7 @@ from aiogram.types import Message, ReplyKeyboardRemove
 
 from app.keyboadrs import WANT_PLAY, WANT_KNOW, WANT_RETURN
 from app.models import dto
+from app.views.user import user_link
 
 
 class GameInfoRequestType(enum.Enum):
@@ -44,9 +45,9 @@ async def returning_to_game_handler(m: Message):
 async def notify_admin(admin_id: int, user: dto.User, request_type: GameInfoRequestType, bot: Bot):
     match request_type:
         case GameInfoRequestType.try_game:
-            await bot.send_message(chat_id=admin_id, text=f"@{user.username} хочет попробовать сыграть в Схватку")
+            await bot.send_message(chat_id=admin_id, text=f"{user_link(user)} хочет попробовать сыграть в Схватку")
         case GameInfoRequestType.about_game:
-            await bot.send_message(chat_id=admin_id, text=f"@{user.username} хочет узнать больше о Схватке")
+            await bot.send_message(chat_id=admin_id, text=f"{user_link(user)} хочет узнать больше о Схватке")
 
 
 def setup() -> Router:
