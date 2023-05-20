@@ -1,5 +1,5 @@
 from sqlalchemy import BigInteger
-from sqlalchemy.orm import mapped_column, Mapped
+from sqlalchemy.orm import mapped_column, Mapped, relationship
 
 from app.models import dto
 from app.models.db.base import Base
@@ -14,6 +14,9 @@ class User(Base):
     last_name: Mapped[str]
     username: Mapped[str]
     is_bot: Mapped[bool] = mapped_column(default=False)
+
+    topic = relationship("Topic", back_populates="user", foreign_keys="Topic.user_id", uselist=False)
+    messages = relationship("Message", back_populates="user", foreign_keys="Message.user_id", uselist=True)
 
     def __repr__(self):
         rez = (
