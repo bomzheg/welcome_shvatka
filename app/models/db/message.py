@@ -1,5 +1,5 @@
 # from https://github.com/MasterGroosha/telegram-feedback-bot-topics
-from sqlalchemy import UniqueConstraint, BigInteger, Boolean
+from sqlalchemy import UniqueConstraint, BigInteger, Boolean, ForeignKey
 from sqlalchemy.orm import mapped_column, Mapped, relationship
 
 from .base import Base
@@ -16,7 +16,7 @@ class Message(Base):
     )
 
     id: Mapped[int] = mapped_column(BigInteger, primary_key=True)
-    user_id: Mapped[int] = mapped_column(BigInteger, nullable=False)
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id"), nullable=False)
     user = relationship("User", back_populates="messages", foreign_keys=user_id, uselist=False)
     user_message_id: Mapped[int] = mapped_column(BigInteger, nullable=False)
     forum_message_id: Mapped[int] = mapped_column(BigInteger, nullable=False)

@@ -15,7 +15,12 @@ class User(Base):
     username: Mapped[str]
     is_bot: Mapped[bool] = mapped_column(default=False)
 
-    topic = relationship("Topic", back_populates="user", foreign_keys="Topic.user_id", uselist=False)
+    topic = relationship(
+        "Topic",
+        back_populates="user",
+        foreign_keys="Topic.user_id",
+        uselist=False,
+    )
     messages = relationship("Message", back_populates="user", foreign_keys="Message.user_id", uselist=True)
 
     def __repr__(self):
