@@ -74,6 +74,7 @@ async def notify_admin(
 
 def setup() -> Router:
     router = Router(name=__name__)
+    router.message.filter(F.chat.type == "private")
     router.message.register(try_game_handler, F.text == WANT_PLAY)
     router.message.register(about_game_handler, F.text == WANT_KNOW)
     router.message.register(returning_to_game_handler, F.text == WANT_RETURN)

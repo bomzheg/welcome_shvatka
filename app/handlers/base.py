@@ -54,7 +54,7 @@ async def chat_migrate(message: Message, chat: dto.Chat, dao: HolderDao):
 
 def setup_base(dp: Dispatcher):
     router = Router(name=__name__)
-    router.message.register(start_cmd, Command("start"))
+    router.message.register(start_cmd, F.chat.type == "private", Command("start"))
     router.message.register(
         chat_id, Command(commands=["idchat", "chat_id", "id"], prefix="/!"),
     )
