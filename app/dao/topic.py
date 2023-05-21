@@ -34,7 +34,7 @@ class TopicDAO(BaseDAO[db.Topic]):
             topic_id=topic_id,
             start_message_id=start_message_id,
         )
-        self.save(topic)
+        self._save(topic)
         await self.flush(topic)
         return topic.to_dto()
 

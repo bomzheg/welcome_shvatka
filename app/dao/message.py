@@ -21,6 +21,6 @@ class MessageDAO(BaseDAO[db.Message]):
             forum_message_id=forum_message_id,
             from_admin=from_admin,
         )
-        self.save(message)
+        self._save(message)
         await self.flush(message)
         return message.to_dto()

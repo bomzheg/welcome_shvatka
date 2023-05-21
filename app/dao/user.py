@@ -10,12 +10,6 @@ class UserDAO(BaseDAO[db.User]):
     def __init__(self, session: AsyncSession):
         super().__init__(db.User, session)
 
-    async def get_by_tg_id(self, tg_id: int) -> db.User:
-        result = await self.session.execute(
-            select(db.User).where(db.User.tg_id == tg_id)
-        )
-        return result.scalar_one()
-
     async def get_by_id(self, id_: int) -> dto.User:
         return (await self._get_by_id(id_)).to_dto()
 

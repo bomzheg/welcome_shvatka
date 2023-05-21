@@ -22,7 +22,7 @@ async def any_message(user_message: Message, user: dto.User, dao: HolderDao, bot
             topic_id=new_topic.message_thread_id,
             start_message_id=first_message.message_id,
         )
-        await dao.commit()  # even if next operation failed topic was created and we must save it
+        await dao.commit()  # even if next operation failed topic was created and we must _save it
     forum_message = await user_message.send_copy(
         chat_id=forum_chat_id,
         message_thread_id=topic.topic_id,

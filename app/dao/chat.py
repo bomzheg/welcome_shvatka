@@ -1,3 +1,4 @@
+from sqlalchemy import ScalarResult
 from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
@@ -10,11 +11,11 @@ class ChatDAO(BaseDAO[db.Chat]):
     def __init__(self, session: AsyncSession):
         super().__init__(db.Chat, session)
 
-    async def get_by_tg_id(self, tg_id: int) -> db.Chat:
-        result = await self.session.execute(
+    async def _get_by_tg_id(self, tg_id: int) -> db.Chat:
+        result: ScalarResult[db.Chat] = await self.session.scalars(
             select(db.Chat).where(db.Chat.tg_id == tg_id)
         )
-        return result.scalar_one()
+        return result.one()
 
     async def upsert_chat(self, chat: dto.Chat) -> dto.Chat:
         kwargs = dict(tg_id=chat.tg_id, title=chat.title, username=chat.username, type=chat.type)
@@ -29,6 +30,6 @@ class ChatDAO(BaseDAO[db.Chat]):
         return saved_chat.one().to_dto()
 
     async def update_chat_id(self, chat: dto.Chat, new_id: int):
-        chat_db = await self.get_by_tg_id(chat.tg_id)
+        chat_db = await self._get_by_tg_id(chat.tg_id)
         chat_db.tg_id = new_id
-        self.save(chat_db)
+        self._save(chat_db)
