@@ -1,6 +1,7 @@
 import enum
 
 from aiogram import Bot, Router, F
+from aiogram.dispatcher.event.bases import SkipHandler
 from aiogram.types import Message, ReplyKeyboardRemove
 
 from app.keyboadrs import WANT_PLAY, WANT_KNOW, WANT_RETURN
@@ -20,6 +21,7 @@ async def try_game_handler(m: Message, user: dto.User, bot: Bot, admin_id: int):
         "Скоро с тобой свяжется один из капитанов и обязательно возьмет в команду.",
         reply_markup=ReplyKeyboardRemove(),
     )
+    raise SkipHandler
 
 
 async def about_game_handler(m: Message, user: dto.User, bot: Bot, admin_id: int):
@@ -29,6 +31,7 @@ async def about_game_handler(m: Message, user: dto.User, bot: Bot, admin_id: int
         "Скоро с тобой свяжется один из капитанов и ответит на все вопросы.",
         reply_markup=ReplyKeyboardRemove(),
     )
+    raise SkipHandler
 
 
 async def returning_to_game_handler(m: Message):
@@ -40,6 +43,7 @@ async def returning_to_game_handler(m: Message):
         "Или напиши капитану @pblgblk",
         reply_markup=ReplyKeyboardRemove(),
     )
+    raise SkipHandler
 
 
 async def notify_admin(admin_id: int, user: dto.User, request_type: GameInfoRequestType, bot: Bot):
