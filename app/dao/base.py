@@ -18,7 +18,7 @@ class BaseDAO(Generic[Model]):
         result: ScalarResult[Model] = await self.session.scalars(select(self.model))
         return result.all()
 
-    async def get_by_id(self, id_: int) -> Model:
+    async def _get_by_id(self, id_: int) -> Model:
         result: ScalarResult[Model] = await self.session.scalars(
             select(self.model).where(self.model.id == id_)
         )

@@ -16,6 +16,9 @@ class UserDAO(BaseDAO[db.User]):
         )
         return result.scalar_one()
 
+    async def get_by_id(self, id_: int) -> dto.User:
+        return (await self._get_by_id(id_)).to_dto()
+
     async def upsert_user(self, user: dto.User) -> dto.User:
         kwargs = dict(
             tg_id=user.tg_id,

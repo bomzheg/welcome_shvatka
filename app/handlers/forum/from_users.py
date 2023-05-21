@@ -9,7 +9,7 @@ from app.views.user import user_link
 
 async def any_message(user_message: Message, user: dto.User, dao: HolderDao, bot: Bot, forum_chat_id: int):
     try:
-        topic = await dao.topic.get_one(user)
+        topic = await dao.topic.get_by_user(user)
     except NoTopicFoundException:
         new_topic = await bot.create_forum_topic(forum_chat_id, user.name_mention[:127])
         first_message = await bot.send_message(

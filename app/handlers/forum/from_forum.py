@@ -3,7 +3,6 @@ from aiogram.filters import Command
 from aiogram.types import Message
 
 from app.dao.holder import HolderDao
-from app.models import dto
 from app.models.config.main import BotConfig
 
 
@@ -17,10 +16,11 @@ async def note(_message: Message):
     return
 
 
-async def any_message(forum_message: Message, user: dto.User, dao: HolderDao):
+async def any_message(forum_message: Message, dao: HolderDao):
+    topic = await dao.topic.get_by_topic(forum_message.message_thread_id)
+    user = await dao.user.get_by_id(topic.user_id)
     user_message = await forum_message.send_copy(
         chat_id=user.tg_id,
-        allow_sending_without_reply=True
     )
     await dao.message.save_message_pair(
         user=user,

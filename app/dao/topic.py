@@ -11,7 +11,7 @@ class TopicDAO(BaseDAO[db.Topic]):
     def __init__(self, session: AsyncSession):
         super().__init__(db.Topic, session)
 
-    async def get_one(self, user: dto.User) -> dto.Topic:
+    async def get_by_user(self, user: dto.User) -> dto.Topic:
         result: ScalarResult[db.Topic] = await self.session.scalars(
             select(db.Topic)
             .where(db.Topic.user_id == user.db_id)
@@ -20,6 +20,13 @@ class TopicDAO(BaseDAO[db.Topic]):
             return result.one().to_dto()
         except NoResultFound as e:
             raise exceptions.NoTopicFoundException from e
+
+    async def get_by_topic(self, topic_id: int) -> dto.Topic:
+        result: ScalarResult[db.Topic] = await self.session.scalars(
+            select(db.Topic)
+            .where(db.Topic.topic_id == topic_id)
+        )
+        return result.one().to_dto()
 
     async def create(self, user: dto.User, topic_id: int, start_message_id: int) -> dto.Topic:
         topic = db.Topic(
