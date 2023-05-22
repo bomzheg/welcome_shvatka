@@ -1,9 +1,9 @@
-# Simple Aiogram 3.x template
-[![wakatime](https://wakatime.com/badge/user/929ee39b-4eb0-4076-ab5e-5ade3c56e464/project/7d995a8f-0e9f-428a-a098-5186c70b6d6e.svg)](https://wakatime.com/badge/user/929ee39b-4eb0-4076-ab5e-5ade3c56e464/project/7d995a8f-0e9f-428a-a098-5186c70b6d6e)
+# Бот обратной связи по вопросам схватки
+[![wakatime](https://wakatime.com/badge/github/bomzheg/welcome_shvatka.svg)](https://wakatime.com/badge/github/bomzheg/welcome_shvatka)
 
 ## How to run
 
-Required launched PostgreSQL and installed Python3.10
+Required to be launched PostgreSQL and installed Python3.10
 
 * copy config template
 ```bash
