@@ -1,4 +1,5 @@
 from aiogram import Router, F
+from aiogram.enums import ContentType
 from aiogram.filters import Command
 from aiogram.types import Message
 
@@ -33,7 +34,26 @@ async def any_message(forum_message: Message, dao: HolderDao):
 
 def setup(config: BotConfig) -> Router:
     router = Router(name=__name__)
-    router.message.filter(F.chat.id == config.forum_chat_id)
+    router.message.filter(
+        F.chat.id == config.forum_chat_id,
+        F.message_thread_id,
+        F.content_type.in_([
+            ContentType.DICE,
+            ContentType.ANIMATION,
+            ContentType.AUDIO,
+            ContentType.CONTACT,
+            ContentType.DOCUMENT,
+            ContentType.LOCATION,
+            ContentType.PHOTO,
+            ContentType.POLL,
+            ContentType.STICKER,
+            ContentType.TEXT,
+            ContentType.VENUE,
+            ContentType.VIDEO,
+            ContentType.VIDEO_NOTE,
+            ContentType.VOICE,
+        ]),
+    )
     router.message.register(note, Command(commands="note", prefix="!/"))
     router.message.register(any_message)
     return router

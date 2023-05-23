@@ -1,4 +1,5 @@
 from aiogram import Router, F, Bot
+from aiogram.enums import ChatType
 from aiogram.types import Message
 
 from app.dao.holder import HolderDao
@@ -12,6 +13,6 @@ async def any_message_handler(user_message: Message, user: dto.User, dao: Holder
 
 def setup() -> Router:
     router = Router(name=__name__)
-    router.message.filter(F.chat.type == "private")
+    router.message.filter(F.chat.type == ChatType.PRIVATE)
     router.message.register(any_message_handler)
     return router

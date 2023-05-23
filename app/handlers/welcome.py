@@ -2,6 +2,7 @@ import enum
 
 from aiogram import Bot, Router, F
 from aiogram.dispatcher.event.bases import SkipHandler
+from aiogram.enums import ChatType
 from aiogram.types import Message, ReplyKeyboardRemove
 
 from app.dao.holder import HolderDao
@@ -74,7 +75,7 @@ async def notify_admin(
 
 def setup() -> Router:
     router = Router(name=__name__)
-    router.message.filter(F.chat.type == "private")
+    router.message.filter(F.chat.type == ChatType.PRIVATE)
     router.message.register(try_game_handler, F.text == WANT_PLAY)
     router.message.register(about_game_handler, F.text == WANT_KNOW)
     router.message.register(returning_to_game_handler, F.text == WANT_RETURN)
