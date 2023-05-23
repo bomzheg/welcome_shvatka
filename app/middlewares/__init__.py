@@ -8,6 +8,6 @@ from app.models.config.main import BotConfig
 
 
 def setup_middlewares(dp: Dispatcher, pool: async_sessionmaker[AsyncSession], bot_config: BotConfig):
-    dp.message.middleware(ConfigMiddleware(bot_config))
-    dp.message.middleware(DBMiddleware(pool))
-    dp.message.middleware(LoadDataMiddleware())
+    dp.update.outer_middleware(ConfigMiddleware(bot_config))
+    dp.update.outer_middleware(DBMiddleware(pool))
+    dp.update.outer_middleware(LoadDataMiddleware())

@@ -1,4 +1,4 @@
-from aiogram import Router, F
+from aiogram import Router, F, Bot
 from aiogram.enums import ContentType
 from aiogram.filters import Command
 from aiogram.types import Message
@@ -40,6 +40,20 @@ async def any_message(forum_message: Message, dao: HolderDao):
     await dao.commit()
 
 
+async def edited_message(forum_message: Message, bot: Bot, dao: HolderDao):
+    topic = await dao.topic.get_by_topic(forum_message.message_thread_id)
+    user = await dao.user.get_by_id(topic.user_id)
+    message_pair = await dao.message.get_by_forum_message_id(
+        forum_message.message_id,
+    )
+    if forum_message.text:
+        await bot.edit_message_text(
+            chat_id=user.tg_id,
+            message_id=message_pair.user_message_id,
+            text=forum_message.text,
+        )
+
+
 def setup(config: BotConfig) -> Router:
     router = Router(name=__name__)
     router.message.filter(
@@ -64,4 +78,9 @@ def setup(config: BotConfig) -> Router:
     )
     router.message.register(note, Command(commands="note", prefix="!/"))
     router.message.register(any_message)
+    router.edited_message.filter(
+        F.chat.id == config.forum_chat_id,
+        F.message_thread_id,
+    )
+    router.edited_message.register(edited_message)
     return router
