@@ -5,7 +5,7 @@ from aiogram.types import Message
 
 from app.dao.holder import HolderDao
 from app.models.config.main import BotConfig
-from app.services.messages import found_reply_from_topic
+from app.services.messages import find_reply_message_id_from_forum
 
 
 async def note(_message: Message):
@@ -18,13 +18,10 @@ async def note(_message: Message):
     return
 
 
-async def any_message(forum_message: Message, dao: HolderDao):
+async def any_message_from_forum(forum_message: Message, dao: HolderDao):
     topic = await dao.topic.get_by_topic(forum_message.message_thread_id)
     user = await dao.user.get_by_id(topic.user_id)
-    target_reply_message_id = None
-    if reply_message_id := found_reply_from_topic(topic, forum_message):
-        if message_pair := await dao.message.get_by_forum_message_id(reply_message_id):
-            target_reply_message_id = message_pair.user_message_id
+    target_reply_message_id = await find_reply_message_id_from_forum(forum_message, topic, dao)
     user_message = await forum_message.send_copy(
         chat_id=user.tg_id,
         reply_to_message_id=target_reply_message_id,
@@ -76,7 +73,7 @@ def setup(config: BotConfig) -> Router:
         ]),
     )
     router.message.register(note, Command(commands="note", prefix="!/"))
-    router.message.register(any_message)
+    router.message.register(any_message_from_forum)
     router.edited_message.filter(
         F.chat.id == config.forum_chat_id,
         F.message_thread_id,

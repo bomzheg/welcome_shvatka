@@ -7,12 +7,15 @@ from app.models import dto
 from app.views.user import user_link
 
 
-async def any_message(user_message: Message, user: dto.User, dao: HolderDao, bot: Bot, forum_chat_id: int) -> dto.Topic:
+async def any_message_from_user(
+    user_message: Message,
+    user: dto.User,
+    dao: HolderDao,
+    bot: Bot,
+    forum_chat_id: int,
+) -> dto.Topic:
     topic = await create_topic(user, dao, bot, forum_chat_id)
-    target_reply_message_id = None
-    if reply_message_id := found_reply_from_user(user_message):
-        if message_pair := await dao.message.get_by_user_message_id(reply_message_id):
-            target_reply_message_id = message_pair.forum_message_id
+    target_reply_message_id = await find_reply_message_id_from_user(user_message, dao)
     forum_message = await user_message.send_copy(
         chat_id=forum_chat_id,
         message_thread_id=topic.topic_id,
@@ -27,6 +30,14 @@ async def any_message(user_message: Message, user: dto.User, dao: HolderDao, bot
     )
     await dao.commit()
     return topic
+
+
+async def find_reply_message_id_from_user(user_message: Message, dao: HolderDao) -> int | None:
+    target_reply_message_id = None
+    if reply_message_id := found_reply_from_user(user_message):
+        if message_pair := await dao.message.get_by_user_message_id(reply_message_id):
+            target_reply_message_id = message_pair.forum_message_id
+    return target_reply_message_id
 
 
 def found_reply_from_user(message: Message) -> int | None:
@@ -59,3 +70,11 @@ async def create_topic(user: dto.User, dao: HolderDao, bot: Bot, forum_chat_id: 
         )
         await dao.commit()
     return topic
+
+
+async def find_reply_message_id_from_forum(forum_message: Message, topic: dto.Topic, dao: HolderDao) -> int | None:
+    target_reply_message_id = None
+    if reply_message_id := found_reply_from_topic(topic, forum_message):
+        if message_pair := await dao.message.get_by_forum_message_id(reply_message_id):
+            target_reply_message_id = message_pair.user_message_id
+    return target_reply_message_id

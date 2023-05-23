@@ -1,14 +1,13 @@
 import enum
 
 from aiogram import Bot, Router, F
-from aiogram.dispatcher.event.bases import SkipHandler
 from aiogram.enums import ChatType
 from aiogram.types import Message, ReplyKeyboardRemove
 
 from app.dao.holder import HolderDao
 from app.keyboadrs import WANT_PLAY, WANT_KNOW, WANT_RETURN
 from app.models import dto
-from app.services.messages import any_message
+from app.services.messages import any_message_from_user
 from app.views.user import user_link
 
 
@@ -24,7 +23,7 @@ async def try_game_handler(m: Message, user: dto.User, dao: HolderDao, bot: Bot,
         "Скоро с тобой свяжется один из капитанов и обязательно возьмет в команду.",
         reply_markup=ReplyKeyboardRemove(),
     )
-    topic = await any_message(m, user, dao, bot, forum_chat_id)
+    topic = await any_message_from_user(m, user, dao, bot, forum_chat_id)
     await notify_admin(forum_chat_id, topic, user, GameInfoRequestType.try_game, bot)
 
 
@@ -34,7 +33,7 @@ async def about_game_handler(m: Message, user: dto.User, dao: HolderDao, bot: Bo
         "Скоро с тобой свяжется один из капитанов и ответит на все вопросы.",
         reply_markup=ReplyKeyboardRemove(),
     )
-    topic = await any_message(m, user, dao, bot, forum_chat_id)
+    topic = await any_message_from_user(m, user, dao, bot, forum_chat_id)
     await notify_admin(forum_chat_id, topic, user, GameInfoRequestType.about_game, bot)
 
 
@@ -47,7 +46,7 @@ async def returning_to_game_handler(m: Message, user: dto.User, dao: HolderDao, 
         "Или напиши капитану @pblgblk",
         reply_markup=ReplyKeyboardRemove(),
     )
-    topic = await any_message(m, user, dao, bot, forum_chat_id)
+    topic = await any_message_from_user(m, user, dao, bot, forum_chat_id)
     await notify_admin(forum_chat_id, topic, user, GameInfoRequestType.try_game, bot)
 
 

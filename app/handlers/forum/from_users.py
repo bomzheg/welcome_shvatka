@@ -4,11 +4,11 @@ from aiogram.types import Message
 
 from app.dao.holder import HolderDao
 from app.models import dto
-from app.services.messages import any_message
+from app.services.messages import any_message_from_user
 
 
 async def any_message_handler(user_message: Message, user: dto.User, dao: HolderDao, bot: Bot, forum_chat_id: int):
-    return await any_message(user_message, user, dao, bot, forum_chat_id)
+    return await any_message_from_user(user_message, user, dao, bot, forum_chat_id)
 
 
 async def edited_message(user_message: Message, bot: Bot, dao: HolderDao, forum_chat_id: int):
