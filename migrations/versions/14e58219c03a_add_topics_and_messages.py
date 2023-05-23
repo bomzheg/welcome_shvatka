@@ -7,7 +7,6 @@ Create Date: 2023-05-20 20:44:34.061598
 """
 import sqlalchemy as sa
 from alembic import op
-from sqlalchemy.dialects import postgresql
 
 # revision identifiers, used by Alembic.
 revision = '14e58219c03a'
@@ -30,6 +29,7 @@ def upgrade():
             name='unique_messages_ids_combinations',
         )
     )
+    op.create_foreign_key(op.f('fk__messages__user_id__users'), 'messages', 'users', ['user_id'], ['id'])
     op.create_table(
         'topics',
         sa.Column('id', sa.BigInteger(), nullable=False),
@@ -39,6 +39,7 @@ def upgrade():
         sa.PrimaryKeyConstraint('id', name=op.f('pk__topics')),
         sa.UniqueConstraint('user_id', 'topic_id', name='unique_topics_pairs')
     )
+    op.create_foreign_key(op.f('fk__topics__user_id__users'), 'topics', 'users', ['user_id'], ['id'])
 
 
 def downgrade():
