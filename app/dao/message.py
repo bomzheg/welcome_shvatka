@@ -1,3 +1,4 @@
+from sqlalchemy import ScalarResult, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.dao import BaseDAO
@@ -24,3 +25,17 @@ class MessageDAO(BaseDAO[db.Message]):
         self._save(message)
         await self.flush(message)
         return message.to_dto()
+
+    async def get_by_forum_message_id(self, forum_message_id: int) -> dto.Message:
+        result: ScalarResult[db.Message] = await self.session.scalars(
+            select(db.Message)
+            .where(db.Message.forum_message_id == forum_message_id)
+        )
+        return result.one().to_dto()
+
+    async def get_by_user_message_id(self, user_message_id: int) -> dto.Message:
+        result: ScalarResult[db.Message] = await self.session.scalars(
+            select(db.Message)
+            .where(db.Message.user_message_id == user_message_id)
+        )
+        return result.one().to_dto()
