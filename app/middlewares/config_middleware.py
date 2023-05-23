@@ -17,6 +17,5 @@ class ConfigMiddleware(BaseMiddleware):
             data: dict[str, Any],
     ) -> Any:
         data["config"] = self.config
-        data["admin_id"] = self.config.admin_id
         data["forum_chat_id"] = self.config.forum_chat_id
         return await handler(event, data)

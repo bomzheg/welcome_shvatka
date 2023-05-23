@@ -26,7 +26,6 @@ def load_bot_config(dct: dict) -> BotConfig:
         log_chat=dct["log_chat"],
         superusers=dct["superusers"],
         bot_api=load_botapi(dct["botapi"]),
-        admin_id=int(dct["admin_id"]),
         forum_chat_id=int(dct["forum_chat_id"]),
     )
 

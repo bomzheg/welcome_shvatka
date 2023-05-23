@@ -5,7 +5,6 @@ bot:
     - 46866565
   botapi:
     type: official
-  admin_id: 42
   forum_chat_id: 42
 db:
   type: postgresql
