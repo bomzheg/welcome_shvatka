@@ -33,6 +33,8 @@ async def chat_id(message: Message):
             f"\nid {hd.bold(message.reply_to_message.from_user.full_name)}: "
             f"{hd.pre(message.reply_to_message.from_user.id)}"
         )
+    if message.message_thread_id:
+        text += f"topic id: {message.message_thread_id}"
     await message.reply(text, disable_notification=True)
 
 
