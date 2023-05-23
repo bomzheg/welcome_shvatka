@@ -24,11 +24,12 @@ async def any_message(user_message: Message, user: dto.User, dao: HolderDao, bot
         )
         await dao.commit()  # even if next operation failed topic was created and we must _save it
     reply_message_id = None
-    if user_message.reply_to_message:
-        message_pair = await dao.message.get_by_user_message_id(
-            user_message.reply_to_message.message_id,
-        )
-        reply_message_id = message_pair.forum_message_id
+    if reply_message := user_message.reply_to_message:
+        if reply_message.message_id != topic.start_message_id:
+            if message_pair := await dao.message.get_by_user_message_id(
+                reply_message.message_id,
+            ):
+                reply_message_id = message_pair.forum_message_id
     forum_message = await user_message.send_copy(
         chat_id=forum_chat_id,
         message_thread_id=topic.topic_id,
