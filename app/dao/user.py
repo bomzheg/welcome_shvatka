@@ -3,19 +3,15 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 
 from app.dao.base import BaseDAO
-from app.models.db import User
-from app.models import dto
+from app.models import dto, db
 
 
-class UserDAO(BaseDAO[User]):
+class UserDAO(BaseDAO[db.User]):
     def __init__(self, session: AsyncSession):
-        super().__init__(User, session)
+        super().__init__(db.User, session)
 
-    async def get_by_tg_id(self, tg_id: int) -> User:
-        result = await self.session.execute(
-            select(User).where(User.tg_id == tg_id)
-        )
-        return result.scalar_one()
+    async def get_by_id(self, id_: int) -> dto.User:
+        return (await self._get_by_id(id_)).to_dto()
 
     async def upsert_user(self, user: dto.User) -> dto.User:
         kwargs = dict(
@@ -26,11 +22,11 @@ class UserDAO(BaseDAO[User]):
             is_bot=user.is_bot,
         )
         saved_user = await self.session.execute(
-            insert(User)
+            insert(db.User)
             .values(**kwargs)
             .on_conflict_do_update(
-                index_elements=(User.tg_id,), set_=kwargs, where=User.tg_id == user.tg_id
+                index_elements=(db.User.tg_id,), set_=kwargs, where=db.User.tg_id == user.tg_id
             )
-            .returning(User)
+            .returning(db.User)
         )
         return saved_user.scalar_one().to_dto()

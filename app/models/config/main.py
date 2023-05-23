@@ -50,7 +50,7 @@ class BotConfig:
     token: str
     log_chat: int
     superusers: list[int]
-    admin_id: int
+    forum_chat_id: int
     bot_api: BotApiConfig
 
     def create_session(self) -> AiohttpSession | None:

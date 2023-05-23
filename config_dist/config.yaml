@@ -3,7 +3,7 @@ bot:
   log_chat: -1001234567890
   superusers:
     - 666
-  admin_id: 42
+  forum_chat_id: -100777666555
   botapi:
     # can be official (api.telegram.org)
     type: official

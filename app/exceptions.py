@@ -1,0 +1,4 @@
+
+class NoTopicFoundException(Exception):
+
+    pass
